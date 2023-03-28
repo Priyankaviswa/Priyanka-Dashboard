@@ -1,0 +1,86 @@
+from dash import Dash
+from dash import dcc
+from dash import html
+import plotly.graph_objs as go
+import matplotlib as mt
+import pandas as pd
+import plotly.express as px
+import numpy as np
+
+data =pd.read_csv("data.csv")
+print(data.shape,
+data.head()
+)
+
+#dummy=pd.get_dummies(data['City'],drop_first=True).head(10)
+#print(data.describe())
+
+
+app=Dash()
+
+app.layout=html.Div([
+
+dcc.Graph(
+id='scatter_chart',
+figure={
+    'data':[
+    go.Scatter(
+    x=data.Egg,
+    y=data.Fruits,
+   
+    mode='markers'
+    )
+],'layout':go.Layout(
+    title='SCATTERPLOT',
+    xaxis={'title':'eggs'},
+    yaxis={'title':'fruits'}
+)
+}
+),
+dcc.Graph(
+id='HISTOGRAM',
+figure={
+    'data':[
+    go.Histogram(
+    x=data.Egg,
+    y=data.Spices,
+    type='histogram'
+   
+    )
+],'layout':go.Layout(
+    title='HISTOGRAM',
+    xaxis={'title':'egg'},
+    yaxis={'title':'SPICES'}
+)
+}
+),
+
+dcc.Graph(
+id='bar',
+figure={
+    'data':[
+    go.Bar(
+    x=data.Month,
+    y=data.Clothing,
+    type='bar'
+    )
+    
+],'layout':go.Layout(
+    title='BAR',
+    xaxis={'title':'Months'},
+    yaxis={'title':'clothing'}
+    
+)
+}
+),
+
+ dcc.Graph(
+       id='mosaicplot',
+       figure=px.histogram(data, x="Footwear", barmode="overlay", nbins=10, width=800, height=500)
+   )
+    ])
+
+
+
+if _name== 'main_':
+    app.run_server(port=8000)
